@@ -16,6 +16,10 @@
 | `sitemap.xml`, `robots.txt`, `llms.txt` | 검색엔진·AI 크롤러 안내 파일 (자동 생성) |
 | `tools/` | 데이터 수집·페이지 생성 프로그램 |
 
+> 검색엔진은 `robots.txt` 와 `llms.txt` 를 **도메인 맨 위**(`jinjin0009.github.io/robots.txt`)에서만 읽어요.
+> 그래서 실제로 쓰이는 파일은 [`jinjin0009/jinjin0009.github.io`](https://github.com/jinjin0009/jinjin0009.github.io) 저장소에 있어요.
+> `llms.txt` 를 다시 만들었다면 그 저장소에도 복사해 주세요.
+
 ## 데이터 갱신
 
 ```bash
