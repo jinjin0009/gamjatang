@@ -1,0 +1,27 @@
+# 감자탕 감별사야 (BONE CLUB)
+
+> 전국 감자탕 맛집 지도와 사용자 평점, 감자탕 MBTI(취향 테스트), 감자탕 월드컵, 방문 도장깨기를 제공하는 한국어 감자탕 전문 사이트. 2026-10-20 기준 감자탕집 649곳 등록.
+
+- 가게 정보 출처: OpenStreetMap (© OpenStreetMap contributors, ODbL). 다른 플랫폼의 리뷰·사진은 쓰지 않음.
+- 평점: 사이트 사용자가 국물·고기 양·뼈 살코기·볶음밥·가성비 5개 항목(1~5점)으로 매긴 점수의 평균. 후기 5개 미만은 '표본 적음'.
+- 월드컵 결과는 사용자 투표이며 전문가 평가가 아님.
+- 지역별 가게 수: 서울 312곳, 경기 124곳, 인천 19곳, 강원 10곳, 충청 28곳, 대구·경북 18곳, 부산·경남 37곳, 전라 82곳, 제주 19곳.
+
+## 핵심 페이지
+- [감자탕 FAQ](https://jinjin0009.github.io/gamjatang/faq.html): 감자탕 뜻, 뼈해장국과 차이, 먹는 법, 평점 계산 방식
+- [감자탕 MBTI 6가지 유형](https://jinjin0009.github.io/gamjatang/mbti.html): SOUP PSYCHOPATH, BONE COLLECTOR, FRIED RICE FINAL BOSS, OLD SCHOOL TANG, VALUE HUNTER, TANG EXPLORER
+- [감자탕 맛집 지도](https://jinjin0009.github.io/gamjatang/index.html#/map): 지역·이름·메뉴 검색, 평점·후기순 정렬
+
+## 지역별 감자탕 맛집
+- [서울 감자탕 맛집 312곳](https://jinjin0009.github.io/gamjatang/region/seoul.html)
+- [경기 감자탕 맛집 124곳](https://jinjin0009.github.io/gamjatang/region/gyeonggi.html)
+- [인천 감자탕 맛집 19곳](https://jinjin0009.github.io/gamjatang/region/incheon.html)
+- [강원 감자탕 맛집 10곳](https://jinjin0009.github.io/gamjatang/region/gangwon.html)
+- [충청 감자탕 맛집 28곳](https://jinjin0009.github.io/gamjatang/region/chungcheong.html)
+- [대구·경북 감자탕 맛집 18곳](https://jinjin0009.github.io/gamjatang/region/daegu-gyeongbuk.html)
+- [부산·경남 감자탕 맛집 37곳](https://jinjin0009.github.io/gamjatang/region/busan-gyeongnam.html)
+- [전라 감자탕 맛집 82곳](https://jinjin0009.github.io/gamjatang/region/jeolla.html)
+- [제주 감자탕 맛집 19곳](https://jinjin0009.github.io/gamjatang/region/jeju.html)
+
+## 전체 가게 목록
+- [sitemap.xml](https://jinjin0009.github.io/gamjatang/sitemap.xml) 에 가게별 페이지(r/*.html)가 모두 있어요. 각 페이지에 주소·좌표·근처 감자탕집·구조화 데이터(schema.org Restaurant)가 있어요.

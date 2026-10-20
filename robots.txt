@@ -1,0 +1,23 @@
+# 감자탕 감별사야 — 검색엔진과 AI 답변 엔진 모두 환영해요
+User-agent: *
+Allow: /
+
+# AI 검색·답변 서비스 (GEO)
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Yeti
+Allow: /
+
+Sitemap: https://jinjin0009.github.io/gamjatang/sitemap.xml
