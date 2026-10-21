@@ -235,6 +235,9 @@ ${urls.map(([p, pr, cf]) => `  <url><loc>${abs(p)}</loc><lastmod>${today}</lastm
 </urlset>
 `, "utf8");
 
+// 텍스트 사이트맵 (주소만 한 줄씩) — 서치 콘솔이 XML 을 늦게 읽을 때 대비
+writeFileSync(join(root, "sitemap.txt"), urls.map(([p]) => abs(p)).join("\n") + "\n", "utf8");
+
 writeFileSync(join(root, "robots.txt"), `# 감자탕 감별사야 — 검색엔진과 AI 답변 엔진 모두 환영해요
 User-agent: *
 Allow: /
