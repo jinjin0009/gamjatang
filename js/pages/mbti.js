@@ -96,7 +96,7 @@ Router.add("/mbti/result/:type", (app, { type }, query) => {
     UI.toast("프로필에 MBTI 결과를 저장했어요");
     history.replaceState(null, "", "#/mbti/result/" + type);
   }
-  document.title = `${t.name}(${t.kr}) — 감자탕 MBTI 결과 | 감자탕 감별사야`;
+  document.title = `${t.name}(${t.kr}) — 감자탕 MBTI 결과 | 감자탕 감별사`;
   const mine = me && Store.mbtiOf(me.id);
   const isSaved = mine && !mine.sample && mine.type === type;
   const mission = MISSIONS.find((m) => m.id === t.mission);
@@ -164,7 +164,7 @@ function downloadTypeCard(t) {
     g.lineWidth = 10; g.strokeStyle = "#151515"; g.strokeRect(40, 40, 980, 1250);
     g.fillStyle = t.ink;
     g.font = "700 34px 'Space Mono', monospace";
-    g.fillText("감자탕 감별사야 · BONE CLUB", 100, 140);
+    g.fillText("감자탕 감별사 · BONE CLUB", 100, 140);
     g.fillText("MY TANG TYPE", 100, 190);
     g.font = "110px 'Archivo Black', sans-serif";
     const words = t.name.split(" ");

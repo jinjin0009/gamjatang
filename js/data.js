@@ -1,11 +1,11 @@
 /* =========================================================
-   감자탕 감별사야 — 기본 데이터
+   감자탕 감별사 — 기본 데이터
    · 식당: js/data-real.js (OpenStreetMap 에서 수집한 실제 감자탕 가게)를 사용
      data-real.js 가 없을 때만 아래 RESTAURANTS_BASE(가상 예시 식당)를 대신 씀
    · 후기·평점·도장·투표는 실제 사용자 기록으로만 쌓임 (가짜 후기·가짜 통계 없음)
    ========================================================= */
 
-const SITE = { name: "감자탕 감별사야", brand: "BONE CLUB", slogan: "FIND YOUR TANG." };
+const SITE = { name: "감자탕 감별사", brand: "BONE CLUB", slogan: "FIND YOUR TANG." };
 
 const USE_REAL = typeof REAL_RESTAURANTS !== "undefined" && REAL_RESTAURANTS.length > 0;
 

@@ -25,7 +25,7 @@ const App = {
       right = `<a class="btn btn--sm btn--lime" href="#/login?next=${encodeURIComponent(Router.current())}">LOGIN</a>`;
     }
     $("#gnb").innerHTML = `<div class="wrap gnb">
-      <a class="logo" href="#/" aria-label="감자탕 감별사야 홈"><span class="logo__mark">${icon("bone")}</span>
+      <a class="logo" href="#/" aria-label="감자탕 감별사 홈"><span class="logo__mark">${icon("bone")}</span>
         <span class="logo__txt"><span class="logo__kr">${SITE.name}</span><span class="logo__en">${SITE.brand} · ${SITE.slogan}</span></span></a>
       <nav class="gnb__nav" aria-label="주요 메뉴">${NAV.map((n) => `<a href="#${n.path}" class="${isOn(n.path) ? "is-active" : ""}">${n.label}</a>`).join("")}</nav>
       <div class="gnb__right">${me && me.role === "admin" ? `<a class="btn btn--sm btn--ink gnb__admin" href="#/admin">${icon("shield")} ADMIN</a>` : ""}${right}</div>
@@ -36,10 +36,10 @@ const App = {
     }).join("");
     const noFooter = path === "/map" || path === "/login";
     // 화면마다 브라우저 탭 제목을 바꿈 (식당·MBTI 결과 화면은 각 화면에서 더 자세히 설정)
-    const TITLES = { "/": "감자탕 감별사야 — 전국 감자탕 맛집 지도 · 감자탕 MBTI · 월드컵", "/map": "감자탕 맛집 지도", "/mbti": "감자탕 MBTI 테스트", "/mbti/test": "감자탕 MBTI 테스트",
+    const TITLES = { "/": "감자탕 감별사 — 전국 감자탕 맛집 지도 · 감자탕 MBTI · 월드컵", "/map": "감자탕 맛집 지도", "/mbti": "감자탕 MBTI 테스트", "/mbti/test": "감자탕 MBTI 테스트",
       "/worldcup": "감자탕 월드컵", "/stamp": "감자탕 도장깨기", "/profile": "내 프로필", "/login": "로그인 · 회원가입", "/admin": "관리자" };
     const base = Object.keys(TITLES).filter((p) => path === p || (p !== "/" && path.startsWith(p + "/"))).sort((a, b) => b.length - a.length)[0];
-    document.title = path === "/" ? TITLES["/"] : `${TITLES[base] || "감자탕 감별사야"} | 감자탕 감별사야`;
+    document.title = path === "/" ? TITLES["/"] : `${TITLES[base] || "감자탕 감별사"} | 감자탕 감별사`;
     $("#app").classList.toggle("no-footer", noFooter);
   },
 
@@ -54,7 +54,7 @@ const App = {
 
   renderFooter() {
     $("#footer").innerHTML = `<div class="wrap footer">
-      <div><div class="footer__big">FIND<br>YOUR TANG.</div><p class="mt small" style="opacity:.7">${SITE.name} (${SITE.brand}) — 감자탕 맛집 탐험을 게임처럼.<br>가게 정보: © OpenStreetMap contributors (ODbL). 폐업·이전 등으로 실제와 다를 수 있어요. 평점과 후기는 감별사야 사용자 기록으로만 계산해요.</p></div>
+      <div><div class="footer__big">FIND<br>YOUR TANG.</div><p class="mt small" style="opacity:.7">${SITE.name} (${SITE.brand}) — 감자탕 맛집 탐험을 게임처럼.<br>가게 정보: © OpenStreetMap contributors (ODbL). 폐업·이전 등으로 실제와 다를 수 있어요. 평점과 후기는 감별사 사용자 기록으로만 계산해요.</p></div>
       <div><h4>EXPLORE</h4><a href="#/map">맛집 지도</a><a href="#/mbti">감자탕 MBTI</a><a href="#/worldcup">감자탕 월드컵</a><a href="#/stamp">도장깨기</a></div>
       <div><h4>지역별 감자탕</h4>${REGIONS.map((g) => `<a href="region/${REGION_SLUGS[g]}.html">${g} 감자탕 맛집</a>`).join("")}</div>
       <div><h4>ACCOUNT · INFO</h4><a href="#/profile">내 프로필</a><a href="#/login">로그인 · 회원가입</a><a href="faq.html">감자탕 FAQ</a><a href="mbti.html">감자탕 MBTI 유형</a><a href="#/admin">관리자</a></div>

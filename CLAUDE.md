@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-감자탕 감별사야 (BONE CLUB): 빌드 없는 HTML/CSS/JS 단일 페이지 앱(# 주소로 화면 전환). 백엔드 없음. 로그인·후기·도장은 localStorage(`bc_db_v1`)에만 저장(프로토타입).
+감자탕 감별사 (BONE CLUB): 빌드 없는 HTML/CSS/JS 단일 페이지 앱(# 주소로 화면 전환). 백엔드 없음. 로그인·후기·도장은 localStorage(`bc_db_v1`)에만 저장(프로토타입).
 배포: GitHub Pages `jinjin0009/gamjatang` (main, 루트) → https://jinjin0009.github.io/gamjatang/ . push 하면 1~2분 뒤 반영.
 
 ## 구조

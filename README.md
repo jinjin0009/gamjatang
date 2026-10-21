@@ -1,4 +1,4 @@
-# 감자탕 감별사야 (BONE CLUB)
+# 감자탕 감별사 (BONE CLUB)
 
 **FIND YOUR TANG.** — 전국 감자탕 맛집 지도, 감자탕 MBTI, 감자탕 월드컵, 방문 도장깨기, 게임처럼 XP를 주는 후기.
 

@@ -24,7 +24,7 @@ Router.add("/r/:id", (app, { id }) => {
     const vs = visit ? visit.status : "none";
     const mine = Store.myReviewFor(id);
     const saved = Store.isSaved(id);
-    document.title = `${r.name} — ${r.district || r.region} 감자탕 | 감자탕 감별사야`;
+    document.title = `${r.name} — ${r.district || r.region} 감자탕 | 감자탕 감별사`;
     const reviews = Store.visibleReviews((x) => x.rid === id).sort((a, b) => (sortBy === "new" ? b.date.localeCompare(a.date) : Store.likesOf(b) - Store.likesOf(a)));
 
     app.innerHTML = `<div class="wrap">
@@ -102,7 +102,7 @@ Router.add("/r/:id", (app, { id }) => {
       UI.toast(on ? "관심 맛집에 저장했어요" : "관심 맛집에서 뺐어요");
       draw();
     };
-    $("#shareBtn", app).onclick = () => shareLink(r.name, `${r.name} — 감자탕 감별사야`, "/r/" + id);
+    $("#shareBtn", app).onclick = () => shareLink(r.name, `${r.name} — 감자탕 감별사`, "/r/" + id);
     $("#visitBtn", app).onclick = () => { if (!needLogin("방문 기록은 로그인 후 남길 수 있어요")) visitModal(id, draw); };
     $("#rvSort", app).onclick = (e) => { const b = e.target.closest("button"); if (b) { sortBy = b.dataset.s; draw(); } };
     bindReviewCards($("#rvList", app), draw);
