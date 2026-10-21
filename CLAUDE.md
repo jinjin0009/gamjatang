@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-감자탕 감별사 (BONE CLUB): 빌드 없는 HTML/CSS/JS 단일 페이지 앱(# 주소로 화면 전환). 백엔드 없음. 로그인·후기·도장은 localStorage(`bc_db_v1`)에만 저장(프로토타입).
+감자탕 감별사 (BONE CLUB) — 사이트 이름은 "감자탕 감별사"("감별사야" 아님): 빌드 없는 HTML/CSS/JS 단일 페이지 앱(# 주소로 화면 전환). 백엔드 없음. 로그인·후기·도장은 localStorage(`bc_db_v1`)에만 저장(프로토타입).
 배포: GitHub Pages `jinjin0009/gamjatang` (main, 루트) → https://jinjin0009.github.io/gamjatang/ . push 하면 1~2분 뒤 반영.
 
 ## 구조
@@ -26,6 +26,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - robots.txt·llms.txt 는 도메인 맨 위에서만 읽힘. 실제로 쓰이는 파일은 `jinjin0009/jinjin0009.github.io` 저장소(`../github-root`)에 있음. llms.txt 를 새로 만들면 그쪽에도 복사.
 - Google Search Console: URL 접두어 속성으로 등록됨. 확인 파일 `googlecc18b349ef71932c.html` 은 지우면 안 됨. 새 사이트라 사이트맵이 처음에 "가져올 수 없음"으로 뜸 (파일 자체는 정상).
 - 네이버 서치어드바이저·네이버 지도 페이지는 두 브라우저 도구 모두 안전 제한으로 막힘 → 사용자가 직접 해야 함. 네이버 검색 API 수집기는 `tools/collect-naver.mjs` (키는 `tools/naver-key.json`, gitignore 됨).
+- `build-seo.mjs` 는 생성 페이지의 "YYYY-MM-DD 기준" 날짜를 실행한 날로 바꿈 → 문구만 고칠 땐 생성 파일을 직접 고치거나 날짜 변경을 되돌릴 것.
+- `og-image.png`(링크 공유 미리보기)에는 사이트 이름이 그림으로 박혀 있음 → 이름·문구를 바꾸면 `../promo-video` 에서 `node og-image.mjs ../gamjatang/og-image.png` 로 다시 만들기.
+
+## 홍보영상
+- `promo/` = 누구나 볼 수 있는 홍보영상 페이지 (https://jinjin0009.github.io/gamjatang/promo/). 영상 원본과 제작 도구는 저장소 밖 `../promo-video`.
+- 제작 순서 (`../promo-video` 에서): `node capture.mjs`(사이트 화면 캡처, 로컬 서버 8090 필요) → `node music.mjs`(배경음악) → `node render.mjs`(mp4, `--stills 1,2.5` 는 정지 화면만) → `out/gamjatang-promo.mp4` 를 `promo/` 에 복사.
+- 도구는 puppeteer-core + 설치된 Edge, ffmpeg-static. 다시 설치하면 `npm install-scripts approve ffmpeg-static; npm rebuild ffmpeg-static` 를 해야 ffmpeg.exe 가 받아짐.
+- 로컬 serve.ps1 은 폴더 주소(`/promo/`)를 열지 못함 → `/promo/index.html` 로 확인.
+- Claude 아티팩트는 "모든 사용자" 공개가 막혀 있음 → 누구나 볼 페이지는 이 저장소(GitHub Pages)에 올림.
 
 ## 실행·확인
 - 빌드·린트·테스트 도구 없음. 수정 후 `node --check js/<파일>.js` 로 문법 확인 → 미리보기 브라우저에서 화면별로 열어 콘솔 오류 확인.
