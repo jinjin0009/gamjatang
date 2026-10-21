@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 감자탕 감별사야 (BONE CLUB): 빌드 없는 HTML/CSS/JS 단일 페이지 앱(# 주소로 화면 전환). 백엔드 없음. 로그인·후기·도장은 localStorage(`bc_db_v1`)에만 저장(프로토타입).
 배포: GitHub Pages `jinjin0009/gamjatang` (main, 루트) → https://jinjin0009.github.io/gamjatang/ . push 하면 1~2분 뒤 반영.
 
@@ -8,6 +10,10 @@
 - `Router.add(path, render, {auth|admin})` 로 화면 등록. 상태 변경은 `Store.mutate()` 로 감싸야 미션·배지·레벨업 알림이 뜸.
 - XP·레벨·미션·배지는 저장하지 않고 `Store.progress()` 가 기록에서 매번 다시 계산.
 - 식당 기본 목록은 `REAL_RESTAURANTS`(data-real.js)이고, 없으면 `RESTAURANTS_BASE`(가상)를 씀. 모르는 정보(가격·주차 등)는 `null` = 화면에 "미확인". 가짜 후기·가짜 통계는 넣지 않음.
+- 화면 render 함수가 함수를 return 하면 화면을 떠날 때 정리(cleanup)로 실행됨 — 지도처럼 window 이벤트를 다는 화면은 꼭 반환할 것.
+- 지도는 외부 API가 아니라 직접 그린 SVG (`createMap` in ui.js, `proj()` 로 위경도→좌표). 화면에 가게가 많으면 핀 대신 점으로 그림.
+- 식당 id 는 OSM 기반 고정값(`on123…`)이라 다시 수집해도 같은 가게의 후기·도장이 유지됨. id 규칙을 바꾸면 기존 기록이 끊김.
+- `index.html` 의 `#app` 안 정적 내용(SEO 블록)은 검색엔진용이고, 앱이 시작되면 덮어씀. 정적 페이지(`r/`, `region/`)는 `index.html#/r/<id>` 로 앱에 연결.
 - 지역 9개 (`대구·경북`, `부산·경남` 처럼 묶음). 지역 이름을 바꾸면 `REGION_LABELS`(ui.js), `REGION_SLUGS`(app.js), `REGION_SLUG`(build-seo.mjs), 미션 metric 을 같이 바꿔야 함.
 
 ## 데이터 갱신 (순서대로)
@@ -22,6 +28,8 @@
 - 네이버 서치어드바이저·네이버 지도 페이지는 두 브라우저 도구 모두 안전 제한으로 막힘 → 사용자가 직접 해야 함. 네이버 검색 API 수집기는 `tools/collect-naver.mjs` (키는 `tools/naver-key.json`, gitignore 됨).
 
 ## 실행·확인
+- 빌드·린트·테스트 도구 없음. 수정 후 `node --check js/<파일>.js` 로 문법 확인 → 미리보기 브라우저에서 화면별로 열어 콘솔 오류 확인.
+- 기록 관련 흐름은 브라우저 콘솔에서 `Store.signup({email, nick})`, `Store.addReview({...})`, `Store.progress(Store.me().id)` 로 바로 검증 가능. 확인 후 `Store.resetAll()` 로 테스트 데이터 정리.
 - 로컬: `powershell -ExecutionPolicy Bypass -File serve.ps1 -Port 8090` (`.claude/launch.json` 의 `gamjatang`). `.ps1` 파일은 ASCII 로만 저장.
 - git 은 `%LOCALAPPDATA%\Programs\MinGit\cmd\git.exe` 전체 경로로 호출. push 는 SSH(ssh.github.com:443).
 - GitHub 저장소 생성·설정은 내장 브라우저가 로그인돼 있지 않아서 Claude in Chrome 으로 진행.
