@@ -465,7 +465,11 @@ function realToRestaurant(x) {
     id: x.id, name: x.name.replace(/^\s*(\(주\)|㈜|주식회사)\s*/, ""), region: x.region, district: x.district || "", address: x.address || null,
     lat: x.lat, lng: x.lng, hours: x.hours || null, phone: x.phone || null, homepage: x.homepage || null,
     price: null, parking: null, solo: null, open24: x.hours === "24/7" ? true : null, brothStyle: null,
-    oldSchool: false, isNew: false, since: null, menus: [], intro: "",
+    // since: 인허가일자(행정안전부 일반음식점 자료, "YYYY-MM") → 20년 넘었으면 노포, 1년 안이면 신규
+    since: x.since ? +x.since.slice(0, 4) : null,
+    oldSchool: !!x.since && +x.since.slice(0, 4) <= new Date().getFullYear() - 20,
+    isNew: !!x.since && x.since >= new Date(Date.now() - 365 * 864e5).toISOString().slice(0, 7),
+    maybeClosed: !!x.maybeClosed, menus: [], intro: "",
     sample: false, real: true, verifiedSeed: 0,
     // 출처: 상가정보(id 가 s… 이거나 sbiz 번호가 있음)·OpenStreetMap(osm 링크가 있음) 중 하나 또는 둘 다
     fromSbiz: /^s/.test(x.id) || !!x.sbiz, sourceUrl: x.osm || null,

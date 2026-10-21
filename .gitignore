@@ -7,3 +7,8 @@ node_modules/
 Thumbs.db
 # 상가정보 원본 (용량 큼)
 tools/sbiz/
+
+# 공공데이터포털 인증키·받은 인허가 자료
+tools/datago-key.txt
+tools/license-cache.json
+tools/localdata/

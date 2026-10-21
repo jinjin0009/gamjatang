@@ -32,7 +32,7 @@ Router.add("/r/:id", (app, { id }) => {
       <section class="detail-hero">
         <div class="detail-hero__img">${thumbHTML(r)}${r.sample ? '<span class="sample-flag">예시 데이터 · 가상 식당</span>' : ""}</div>
         <div>
-          <div class="row gap-s fw">${r.isNew ? '<span class="tag tag--lime">NEW</span>' : ""}${r.oldSchool ? '<span class="tag">노포</span>' : ""}${r.since ? `<span class="tag tag--ghost">SINCE ${r.since}</span>` : ""}${r.open24 ? '<span class="tag tag--ink">24H</span>' : ""}${r.brothStyle ? `<span class="tag">국물 ${esc(r.brothStyle)}</span>` : ""}</div>
+          <div class="row gap-s fw">${r.maybeClosed ? '<span class="tag tag--ink">폐업 확인 필요</span>' : ""}${r.isNew ? '<span class="tag tag--lime">NEW</span>' : ""}${r.oldSchool ? '<span class="tag">노포</span>' : ""}${r.since ? `<span class="tag tag--ghost">SINCE ${r.since}</span>` : ""}${r.open24 ? '<span class="tag tag--ink">24H</span>' : ""}${r.brothStyle ? `<span class="tag">국물 ${esc(r.brothStyle)}</span>` : ""}</div>
           <h1 class="detail-hero__name">${esc(r.name)}</h1>
           <p class="muted">${esc(r.intro || "")}</p>
           ${r.real ? `<p class="small muted mt-s">${icon("info")} 가게 정보 출처: ${[
@@ -63,7 +63,7 @@ Router.add("/r/:id", (app, { id }) => {
           <dl class="info-grid mt">
             <div class="info-cell">${icon("pin")}<div><dt>주소</dt><dd>${r.address ? esc(r.address) : '<span class="unk">미확인</span>'}${r.sample ? ' <span class="small muted">(가상 주소)</span>' : ""}</dd></div></div>
             <div class="info-cell">${icon("clock")}<div><dt>영업시간</dt><dd>${r.hours ? esc(r.hours) : '<span class="unk">미확인</span>'}</dd></div></div>
-            <div class="info-cell">${icon("phone")}<div><dt>전화번호</dt><dd>${r.phone ? esc(r.phone) + (r.sample ? ' <span class="small muted">(예시 번호)</span>' : "") : '<span class="unk">미확인</span>'}</dd></div></div>
+            <div class="info-cell">${icon("phone")}<div><dt>전화번호</dt><dd>${r.phone ? (r.sample ? esc(r.phone) : `<a class="link" href="tel:${esc(r.phone.replace(/[^\d]/g, ""))}">${esc(r.phone)}</a>`) + (r.sample ? ' <span class="small muted">(예시 번호)</span>' : "") : '<span class="unk">미확인</span>'}</dd></div></div>
             <div class="info-cell">${icon("coin")}<div><dt>가격대</dt><dd>${r.price ? priceLabel(r.price) + " " + ["", "저렴", "보통", "높은 편"][r.price] : '<span class="unk">미확인</span>'}</dd></div></div>
             <div class="info-cell">${icon("car")}<div><dt>주차</dt><dd>${r.parking === null || r.parking === undefined ? '<span class="unk">미확인</span>' : r.parking ? "주차 가능" : "주차 불가"}</dd></div></div>
             <div class="info-cell">${icon("user")}<div><dt>혼밥</dt><dd>${r.solo === null || r.solo === undefined ? '<span class="unk">미확인</span>' : r.solo ? "혼밥 가능" : "혼밥 불편"}</dd></div></div>

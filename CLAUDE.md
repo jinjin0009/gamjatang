@@ -3,7 +3,7 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 감자탕 감별사 (BONE CLUB) — 사이트 이름은 "감자탕 감별사"("감별사야" 아님): 빌드 없는 HTML/CSS/JS 단일 페이지 앱(# 주소로 화면 전환). 백엔드 없음. 로그인·후기·도장은 localStorage(`bc_db_v1`)에만 저장(프로토타입).
-배포: GitHub Pages `jinjin0009/gamjatang` (main, 루트) → https://jinjin0009.github.io/gamjatang/ . push 하면 1~2분 뒤 반영.
+배포: Vercel(Hobby 무료, 팀 `ver-f9f7`, 프로젝트 `gamjatang`) → https://gamjatang-club.vercel.app/ (대표 주소, canonical·sitemap 기준). `jinjin0009/gamjatang` main 에 push 하면 Vercel·GitHub Pages 둘 다 1~2분 뒤 반영. 예전 주소 https://jinjin0009.github.io/gamjatang/ 는 각 페이지 `<head>` 의 스크립트로 같은 경로의 Vercel 주소로 넘김 (`build-seo.mjs` 의 `REDIRECT`, index·promo 는 직접). `gamjatang.vercel.app` 은 남의 사이트라 쓸 수 없음.
 
 ## 구조
 - 스크립트 순서가 중요: `data-real.js` → `data.js` → `ui.js` → `store.js` → `app.js` → `pages/*.js`. 전역 변수 방식.

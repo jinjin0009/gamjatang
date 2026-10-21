@@ -10,7 +10,9 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-export const SITE_URL = "https://jinjin0009.github.io/gamjatang/";
+export const SITE_URL = "https://gamjatang-club.vercel.app/";
+// 예전 주소(GitHub Pages)로 들어오면 같은 페이지의 새 주소(Vercel)로 보냄
+const REDIRECT = `<script>if(location.hostname==="jinjin0009.github.io")location.replace("https://gamjatang-club.vercel.app"+location.pathname.replace(/^\\/gamjatang/,"")+location.search+location.hash)</script>`;
 const today = new Date().toISOString().slice(0, 10);
 
 /* 사이트 데이터 불러오기 (브라우저용 파일을 그대로 실행) */
@@ -49,6 +51,7 @@ function page({ path, title, desc, depth, body, ld = [], type = "website" }) {
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+${REDIRECT}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">

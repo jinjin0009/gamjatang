@@ -140,7 +140,7 @@ Router.add("/map", (app, _p, query) => {
     listEl.innerHTML = shown.map(({ r, st, d }) => `<article class="map-row card" data-rid="${r.id}" tabindex="0" role="link">
       ${thumbHTML(r)}
       <div class="map-row__b">
-        <div class="row gap-s fw">${r.sample ? '<span class="tag tag--ghost">예시</span>' : ""}${!st.count ? '<span class="tag tag--ghost">후기 0</span>' : ""}${r.isNew ? '<span class="tag tag--lime">NEW</span>' : ""}${r.oldSchool ? '<span class="tag">노포</span>' : ""}${r.open24 ? '<span class="tag">24시</span>' : ""}</div>
+        <div class="row gap-s fw">${r.sample ? '<span class="tag tag--ghost">예시</span>' : ""}${!st.count ? '<span class="tag tag--ghost">후기 0</span>' : ""}${r.maybeClosed ? '<span class="tag tag--ink">폐업 확인 필요</span>' : ""}${r.isNew ? '<span class="tag tag--lime">NEW</span>' : ""}${r.oldSchool ? '<span class="tag">노포</span>' : ""}${r.open24 ? '<span class="tag">24시</span>' : ""}</div>
         <h3>${esc(r.name)}</h3>
         <div class="row gap-s">${bonesHTML(st.overall, "sm")}<b class="mono">${fmt1(st.overall)}</b><span class="small muted">후기 ${st.count}${st.lowSample ? " · 표본 적음" : ""}</span></div>
         <div class="map-row__addr">${esc(r.address || r.region + " " + r.district)}${d !== null ? ` · <b>${d < 1 ? Math.round(d * 1000) + "m" : d.toFixed(1) + "km"}</b>` : ""}</div>

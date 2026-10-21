@@ -20,4 +20,4 @@ Allow: /
 User-agent: Yeti
 Allow: /
 
-Sitemap: https://jinjin0009.github.io/gamjatang/sitemap.xml
+Sitemap: https://gamjatang-club.vercel.app/sitemap.xml
