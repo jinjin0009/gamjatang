@@ -20,6 +20,12 @@ const D = new Function(
 )();
 const cleanName = (n) => n.replace(/^\s*(\(주\)|㈜|주식회사)\s*/, "");
 const RS = D.REAL_RESTAURANTS.map((r) => ({ ...r, name: cleanName(r.name) }));
+// 출처 문구: 상가정보(공공데이터포털) + OpenStreetMap
+const ASOF = D.REAL_SOURCE.dataAsOf || "";
+const SRC_SBIZ = `소상공인시장진흥공단 상가(상권)정보(공공데이터포털${ASOF ? `, ${ASOF} 기준` : ""})`;
+const SRC_OSM = "© OpenStreetMap contributors (ODbL)";
+const SRC_TEXT = `${SRC_SBIZ} · ${SRC_OSM}`;
+const fromSbiz = (r) => /^s/.test(r.id) || !!r.sbiz;
 
 const REGION_SLUG = { 서울: "seoul", 경기: "gyeonggi", 인천: "incheon", 강원: "gangwon", 충청: "chungcheong", "대구·경북": "daegu-gyeongbuk", "부산·경남": "busan-gyeongnam", 전라: "jeolla", 제주: "jeju" };
 const REGION_FULL = { 서울: "서울특별시", 경기: "경기도", 인천: "인천광역시", 강원: "강원특별자치도", 충청: "대전·세종·충청북도·충청남도", "대구·경북": "대구광역시·경상북도", "부산·경남": "부산·울산·경상남도", 전라: "광주·전라북도·전라남도", 제주: "제주특별자치도" };
@@ -74,7 +80,7 @@ ${ld.map(jsonld).join("\n")}
 ${body}
 </main>
 <footer id="footer"><div class="wrap footer">
-  <div><div class="footer__big">FIND<br>YOUR TANG.</div><p class="mt small" style="opacity:.7">감자탕 감별사 (BONE CLUB) — 전국 감자탕 맛집 지도 · 감자탕 MBTI · 감자탕 월드컵 · 도장깨기<br>가게 정보: © OpenStreetMap contributors (ODbL). 폐업·이전 등으로 실제와 다를 수 있어요. 평점은 감별사 사용자 후기로만 계산해요.</p></div>
+  <div><div class="footer__big">FIND<br>YOUR TANG.</div><p class="mt small" style="opacity:.7">감자탕 감별사 (BONE CLUB) — 전국 감자탕 맛집 지도 · 감자탕 MBTI · 감자탕 월드컵 · 도장깨기<br>가게 정보: ${esc(SRC_SBIZ)} · <a href="https://www.openstreetmap.org/copyright" rel="noopener" target="_blank">${SRC_OSM}</a>. 폐업·이전 등으로 실제와 다를 수 있어요. 평점은 감별사 사용자 후기로만 계산해요.</p></div>
   <div><h4>지역별 감자탕</h4>${D.REGIONS.map((g) => `<a href="${up}region/${REGION_SLUG[g]}.html">${g} 감자탕 맛집</a>`).join("")}</div>
   <div><h4>알아보기</h4><a href="${up}faq.html">감자탕 FAQ</a><a href="${up}mbti.html">감자탕 MBTI 유형</a><a href="${up}index.html#/worldcup">감자탕 월드컵</a><a href="${up}index.html#/stamp">도장깨기</a></div>
 </div></footer>
@@ -138,7 +144,7 @@ for (const r of RS) {
   <tr><th>영업시간</th><td>${esc(r.hours || "미확인")}</td></tr>
   <tr><th>음식 종류</th><td>감자탕 · 뼈해장국</td></tr>
   <tr><th>사용자 평점</th><td>감자탕 감별사 사용자 후기로 계산돼요. <a href="../index.html#/r/${r.id}">지금 평점 보기</a></td></tr>
-  <tr><th>정보 출처</th><td>${r.osm ? `<a href="${esc(r.osm)}" rel="nofollow noopener" target="_blank">OpenStreetMap</a>` : "OpenStreetMap"} (© OpenStreetMap contributors, ODbL) · ${today} 기준</td></tr>
+  <tr><th>정보 출처</th><td>${[fromSbiz(r) ? esc(SRC_SBIZ) : "", r.osm ? `<a href="${esc(r.osm)}" rel="nofollow noopener" target="_blank">OpenStreetMap</a> (<a href="https://www.openstreetmap.org/copyright" rel="noopener" target="_blank">© OpenStreetMap contributors</a>, ODbL)` : ""].filter(Boolean).join(" · ")}</td></tr>
 </table>
 <p class="small muted mt-s">폐업·이전 등으로 실제와 다를 수 있어요. 방문 전 가게에 확인해 주세요.</p>
 </section>
@@ -159,7 +165,7 @@ for (const g of D.REGIONS) {
   const title = `${g} 감자탕 맛집 ${list.length}곳 — 동네별 지도 | 감자탕 감별사`;
   const desc = `${REGION_FULL[g]} 감자탕집 ${list.length}곳을 동네별로 모았어요. ${top.slice(0, 3).map(([d, a]) => `${d} ${a.length}곳`).join(", ")} 등. 국물·고기·볶음밥 사용자 평점과 도장깨기까지.`;
   const qa = [
-    [`${g}에는 감자탕집이 몇 곳 있나요?`, `감자탕 감별사에 등록된 ${g}(${REGION_FULL[g]}) 감자탕집은 ${list.length}곳이에요. (${today} 기준, OpenStreetMap 데이터)`],
+    [`${g}에는 감자탕집이 몇 곳 있나요?`, `감자탕 감별사에 등록된 ${g}(${REGION_FULL[g]}) 감자탕집은 ${list.length}곳이에요. (${today} 기준, 소상공인시장진흥공단 상가정보·OpenStreetMap 데이터)`],
     [`${g}에서 감자탕집이 가장 많은 동네는?`, top.slice(0, 3).map(([d, a]) => `${esc(d)}(${a.length}곳)`).join(", ") + " 순이에요."],
     [`${g} 감자탕 맛집 순위는 어떻게 정하나요?`, "광고나 외부 별점이 아니라, 감자탕 감별사 사용자가 남긴 국물·고기·뼈·볶음밥·가성비 5개 항목 점수의 평균으로 정해요. 후기가 5개 미만인 가게는 '표본 적음'으로 표시해요."],
   ];
@@ -191,7 +197,7 @@ const FAQ = [
   ["감자탕은 어떻게 먹으면 맛있어요?", "먼저 국물 맛을 보고, 뼈에 붙은 살을 젓가락으로 발라 먹은 뒤, 우거지와 감자를 곁들여요. 마지막에 남은 국물에 밥·김·김치를 넣어 볶음밥으로 마무리하면 '감자탕 풀코스'예요."],
   ["감자탕 감별사는 어떤 사이트예요?", `전국 감자탕 맛집 지도, 감자탕 MBTI(취향 테스트), 감자탕 월드컵, 방문 도장깨기, 게임처럼 XP를 주는 후기 기능이 있는 감자탕 전문 플랫폼이에요. 현재 ${total}곳의 감자탕집이 등록돼 있어요.`],
   ["전국에 등록된 감자탕집은 몇 곳이에요?", `${today} 기준 ${total}곳이에요. 지역별로는 ${regionCounts}이에요.`],
-  ["가게 정보는 어디서 가져와요?", "공개 지도 데이터인 OpenStreetMap(© OpenStreetMap contributors, ODbL)에서 가게 이름·주소·위치를 가져와요. 다른 플랫폼의 리뷰나 사진은 가져오지 않아요. 폐업·이전 등으로 실제와 다를 수 있어요."],
+  ["가게 정보는 어디서 가져와요?", `공공데이터포털에 공개된 ${SRC_SBIZ}에서 상호에 감자탕·뼈해장국·감자국·뼈다귀가 들어간 음식점의 이름·주소·위치를 가져오고, 공개 지도 데이터인 OpenStreetMap(© OpenStreetMap contributors, ODbL)의 전화번호·영업시간을 더해요. 다른 플랫폼의 리뷰나 사진은 가져오지 않아요. 폐업·이전 등으로 실제와 다를 수 있어요.`],
   ["평점은 어떻게 계산해요?", "감자탕 감별사 사용자가 남긴 BROTH POWER(국물), MEAT DENSITY(고기 양), BONE VALUE(뼈 살코기), FRIED RICE ENDGAME(볶음밥), VALUE FOR MONEY(가성비) 5개 항목(각 1~5점)의 항목별 평균을 다시 평균 낸 값이에요. 후기가 5개 미만이면 '표본 적음'으로 표시해요."],
   ["감자탕 MBTI는 뭐예요?", `8개 질문으로 감자탕 취향을 6가지 유형(${D.MBTI_ORDER.map((k) => D.MBTI_TYPES[k].name).join(", ")})으로 알려주는 테스트예요. 결과에 맞는 맛집 정렬로 바로 연결돼요.`],
   ["감자탕 월드컵 결과는 믿을 수 있어요?", "사용자 투표 결과일 뿐 전문가 평가나 객관적 순위가 아니에요. 조작을 막기 위해 로그인한 사용자의 같은 월드컵은 하루 1번만 통계에 반영하고, 참여가 30회 미만이면 '초기 투표 결과'로 표시해요."],
@@ -267,7 +273,7 @@ writeFileSync(join(root, "llms.txt"), `# 감자탕 감별사 (BONE CLUB)
 
 > 전국 감자탕 맛집 지도와 사용자 평점, 감자탕 MBTI(취향 테스트), 감자탕 월드컵, 방문 도장깨기를 제공하는 한국어 감자탕 전문 사이트. ${today} 기준 감자탕집 ${total}곳 등록.
 
-- 가게 정보 출처: OpenStreetMap (© OpenStreetMap contributors, ODbL). 다른 플랫폼의 리뷰·사진은 쓰지 않음.
+- 가게 정보 출처: ${SRC_TEXT}. 다른 플랫폼의 리뷰·사진은 쓰지 않음.
 - 평점: 사이트 사용자가 국물·고기 양·뼈 살코기·볶음밥·가성비 5개 항목(1~5점)으로 매긴 점수의 평균. 후기 5개 미만은 '표본 적음'.
 - 월드컵 결과는 사용자 투표이며 전문가 평가가 아님.
 - 지역별 가게 수: ${regionCounts}.

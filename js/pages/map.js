@@ -121,7 +121,7 @@ Router.add("/map", (app, _p, query) => {
     const active = ["price", "parking", "solo", "open24", "broth", "meat", "rice", "old", "isnew"].filter((k) => S[k]).length;
     $("#fCount", app).textContent = active ? active : "";
     $("#filterBtn", app).classList.toggle("is-on", active > 0);
-    $("#count", app).textContent = `${rs.length.toLocaleString()}곳` + (USE_REAL ? " · 출처 OpenStreetMap" : " · 예시 데이터");
+    $("#count", app).textContent = `${rs.length.toLocaleString()}곳` + (USE_REAL ? " · 출처 소상공인시장진흥공단 상가정보 · OpenStreetMap" : " · 예시 데이터");
     $("#bboxChip", app).innerHTML = bbox ? `<button class="chip is-on" id="clearBbox">지도 영역 필터 ${icon("x")}</button>` : "";
     $$("#regionChips .chip", app).forEach((c) => c.classList.toggle("is-on", c.dataset.region === S.region));
     renderBanners();

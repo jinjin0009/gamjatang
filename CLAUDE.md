@@ -19,6 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 데이터 갱신 (순서대로)
 - `node tools/collect-osm.mjs` — OpenStreetMap Overpass 에서 감자탕 가게 수집 (키 불필요)
 - `node tools/enrich-address.mjs` — 빈 주소를 Nominatim 으로 채움 (1초 1회, `tools/geocache.json` 캐시)
+- `node tools/collect-sbiz.mjs` — 공공데이터포털 소상공인 상가(상권)정보(https://www.data.go.kr/data/15083033/fileData.do, 분기 갱신, 로그인 없이 받아짐)의 zip 을 `tools/sbiz/` 에 풀어 두고 실행. 상호에 감자탕·뼈해장국·감자국·뼈다귀가 들어간 음식점을 골라 OSM 목록과 합침(약 4,800곳). 같은 가게는 OSM id 유지, 새 가게 id 는 `s`+상가업소번호. OSM 원본은 `tools/osm-base.json` 에 보관되므로 다시 돌려도 결과가 같음 (collect-osm 을 새로 돌리면 그 결과가 새 원본이 됨). `--dry` 는 숫자만, `--report` 는 못 합친 OSM 가게 목록. `tools/sbiz/`(350MB)는 gitignore.
 - `node tools/build-seo.mjs` — `r/`, `region/`, `faq.html`, `mbti.html`, sitemap.xml/txt, robots.txt, llms.txt, index.html 의 SEO 블록(`<!-- SEO:... -->`) 다시 생성
 - 새 주소에는 "전남광주통합특별시" 같은 바뀐 시·도 이름이 섞여 있음. `regionFrom()` 접두어 목록을 확인할 것.
 

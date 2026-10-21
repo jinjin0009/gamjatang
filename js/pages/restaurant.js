@@ -35,7 +35,10 @@ Router.add("/r/:id", (app, { id }) => {
           <div class="row gap-s fw">${r.isNew ? '<span class="tag tag--lime">NEW</span>' : ""}${r.oldSchool ? '<span class="tag">노포</span>' : ""}${r.since ? `<span class="tag tag--ghost">SINCE ${r.since}</span>` : ""}${r.open24 ? '<span class="tag tag--ink">24H</span>' : ""}${r.brothStyle ? `<span class="tag">국물 ${esc(r.brothStyle)}</span>` : ""}</div>
           <h1 class="detail-hero__name">${esc(r.name)}</h1>
           <p class="muted">${esc(r.intro || "")}</p>
-          ${r.real ? `<p class="small muted mt-s">${icon("info")} 가게 정보 출처: ${r.sourceUrl ? `<a class="link" href="${esc(r.sourceUrl)}" target="_blank" rel="noopener">OpenStreetMap</a>` : "OpenStreetMap"} (© OpenStreetMap contributors). 폐업·이전 등으로 실제와 다를 수 있어요.</p>` : ""}
+          ${r.real ? `<p class="small muted mt-s">${icon("info")} 가게 정보 출처: ${[
+            r.fromSbiz ? `소상공인시장진흥공단 상가정보${typeof REAL_SOURCE !== "undefined" && REAL_SOURCE.dataAsOf ? ` (${esc(REAL_SOURCE.dataAsOf)} 기준)` : ""}` : "",
+            r.sourceUrl ? `<a class="link" href="${esc(r.sourceUrl)}" target="_blank" rel="noopener">OpenStreetMap</a> (<a class="link" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>)` : "",
+          ].filter(Boolean).join(" · ")}. 폐업·이전 등으로 실제와 다를 수 있어요.</p>` : ""}
           <div class="score-big">
             <span class="score-big__n">${fmt1(st.overall)}</span>
             <div>${bonesHTML(st.overall, "lg")}<div class="small mt-s">사용자 후기 <b>${st.count}</b>개 · 방문 인증 <b>${st.verified}</b>회</div>

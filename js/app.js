@@ -48,13 +48,13 @@ const App = {
     try { hide = sessionStorage.getItem("bc_hide_proto") === "1"; } catch (e) {}
     const bar = $("#proto-bar");
     if (hide) { bar.innerHTML = ""; return; }
-    bar.innerHTML = `<div class="wrap"><b>PROTOTYPE</b><span class="pb-short">실제 가게 정보 · 기록은 이 브라우저에만 저장</span><span class="pb-long">가게 정보는 <u>실제 데이터</u>(OpenStreetMap)예요 · 로그인과 후기·도장 기록은 아직 <u>이 브라우저에만</u> 저장돼요.</span><button aria-label="안내 닫기">${icon("x")}</button></div>`;
+    bar.innerHTML = `<div class="wrap"><b>PROTOTYPE</b><span class="pb-short">실제 가게 정보 · 기록은 이 브라우저에만 저장</span><span class="pb-long">가게 정보는 <u>실제 데이터</u>(소상공인시장진흥공단 상가정보·OpenStreetMap)예요 · 로그인과 후기·도장 기록은 아직 <u>이 브라우저에만</u> 저장돼요.</span><button aria-label="안내 닫기">${icon("x")}</button></div>`;
     $("button", bar).onclick = () => { try { sessionStorage.setItem("bc_hide_proto", "1"); } catch (e) {} bar.innerHTML = ""; };
   },
 
   renderFooter() {
     $("#footer").innerHTML = `<div class="wrap footer">
-      <div><div class="footer__big">FIND<br>YOUR TANG.</div><p class="mt small" style="opacity:.7">${SITE.name} (${SITE.brand}) — 감자탕 맛집 탐험을 게임처럼.<br>가게 정보: © OpenStreetMap contributors (ODbL). 폐업·이전 등으로 실제와 다를 수 있어요. 평점과 후기는 감별사 사용자 기록으로만 계산해요.</p></div>
+      <div><div class="footer__big">FIND<br>YOUR TANG.</div><p class="mt small" style="opacity:.7">${SITE.name} (${SITE.brand}) — 감자탕 맛집 탐험을 게임처럼.<br>가게 정보: 소상공인시장진흥공단 상가(상권)정보(공공데이터포털) · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a> (ODbL). 폐업·이전 등으로 실제와 다를 수 있어요. 평점과 후기는 감별사 사용자 기록으로만 계산해요.</p></div>
       <div><h4>EXPLORE</h4><a href="#/map">맛집 지도</a><a href="#/mbti">감자탕 MBTI</a><a href="#/worldcup">감자탕 월드컵</a><a href="#/stamp">도장깨기</a></div>
       <div><h4>지역별 감자탕</h4>${REGIONS.map((g) => `<a href="region/${REGION_SLUGS[g]}.html">${g} 감자탕 맛집</a>`).join("")}</div>
       <div><h4>ACCOUNT · INFO</h4><a href="#/profile">내 프로필</a><a href="#/login">로그인 · 회원가입</a><a href="faq.html">감자탕 FAQ</a><a href="mbti.html">감자탕 MBTI 유형</a><a href="#/admin">관리자</a></div>

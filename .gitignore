@@ -5,3 +5,5 @@ tools/geocache.json
 node_modules/
 .DS_Store
 Thumbs.db
+# 상가정보 원본 (용량 큼)
+tools/sbiz/

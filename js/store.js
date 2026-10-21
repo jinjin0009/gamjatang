@@ -466,7 +466,10 @@ function realToRestaurant(x) {
     lat: x.lat, lng: x.lng, hours: x.hours || null, phone: x.phone || null, homepage: x.homepage || null,
     price: null, parking: null, solo: null, open24: x.hours === "24/7" ? true : null, brothStyle: null,
     oldSchool: false, isNew: false, since: null, menus: [], intro: "",
-    sample: false, real: true, source: "OpenStreetMap", sourceUrl: x.osm || null, verifiedSeed: 0,
+    sample: false, real: true, verifiedSeed: 0,
+    // 출처: 상가정보(id 가 s… 이거나 sbiz 번호가 있음)·OpenStreetMap(osm 링크가 있음) 중 하나 또는 둘 다
+    fromSbiz: /^s/.test(x.id) || !!x.sbiz, sourceUrl: x.osm || null,
+    source: [/^s/.test(x.id) || x.sbiz ? "소상공인시장진흥공단 상가정보" : "", x.osm ? "OpenStreetMap" : ""].filter(Boolean).join(" · "),
     mapUrl: "https://map.naver.com/p/search/" + q,
   };
 }
