@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.vectorstores import InMemoryVectorStore
-from langchain_ollama import ChatOllama, OllamaEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+# Ollama·텍스트 분할기는 쓸 때만 불러옴 → Vercel 서버 함수(api/chatbot.py)는 Upstage·OpenAI 패키지만 있으면 됨
 
 HERE = Path(__file__).parent
 DOCS_DIR = HERE / "docs"
@@ -45,6 +45,7 @@ PROMPT = ChatPromptTemplate.from_messages([
 
 def split_documents() -> list[Document]:
     """문서를 청크로 나눔. 단어(띄어쓰기) 단위로 잘라 실제 겹침이 CHUNK_OVERLAP 에 가깝게 맞춰짐."""
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
         chunk_overlap=CHUNK_OVERLAP,
@@ -78,6 +79,7 @@ def embeddings():
     if EMBED_PROVIDER == "upstage":
         from langchain_upstage import UpstageEmbeddings
         return UpstageEmbeddings(model=EMBED_MODEL)
+    from langchain_ollama import OllamaEmbeddings
     return OllamaEmbeddings(model=EMBED_MODEL)
 
 
@@ -102,6 +104,7 @@ def make_llm(model: str | None = None):
         if LLM_MODEL.startswith(("gpt-5", "o")):  # 추론 모델은 temperature 를 못 바꿈 → 생각 단계를 최소로
             return ChatOpenAI(model=LLM_MODEL, reasoning_effort="minimal", max_tokens=1000, timeout=60)
         return ChatOpenAI(model=LLM_MODEL, temperature=0.1, max_tokens=400, timeout=60)
+    from langchain_ollama import ChatOllama
     return ChatOllama(model=model or LLM_MODEL, temperature=0.1, num_predict=320, num_ctx=4096, keep_alive="30m")
 
 

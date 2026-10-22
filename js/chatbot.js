@@ -1,14 +1,12 @@
-/* CS·사이트 소개 챗봇 — 로컬 RAG 서버(chatbot/server.py, Ollama)에 질문을 보내고
-   답변과 함께 참고한 문서 5개의 코사인 유사도를 보여 줌.
-   서버가 이 PC(127.0.0.1:8001)에서만 돌기 때문에, 로컬 미리보기에서 서버가 켜져 있을 때만 버튼이 나타남.
-   배포 사이트에서 쓰려면 window.CHATBOT_API 에 공개 서버 주소를 넣으면 됨. */
+/* CS·사이트 소개 챗봇 — RAG 서버에 질문을 보내고 답변과 함께 참고한 문서 5개의 코사인 유사도를 보여 줌.
+   - 로컬 미리보기: 이 PC 의 chatbot/server.py (127.0.0.1:8001)
+   - 배포 사이트: Vercel 서버 함수 api/chatbot.py (/api/chatbot)
+   서버가 응답하지 않으면(키 미설정 등) 버튼이 나타나지 않음. */
 const Chatbot = {
-  api: window.CHATBOT_API || "http://127.0.0.1:8001",
+  api: window.CHATBOT_API || (["localhost", "127.0.0.1"].includes(location.hostname) ? "http://127.0.0.1:8001" : "/api/chatbot"),
   busy: false,
 
   async init() {
-    const local = ["localhost", "127.0.0.1"].includes(location.hostname);
-    if (!local && !window.CHATBOT_API) return; // 방문자 브라우저가 내부망에 접속하려는 것처럼 보이지 않게
     try {
       const res = await fetch(this.api + "/health", { signal: AbortSignal.timeout(3000) });
       if (!res.ok) return;
@@ -58,15 +56,15 @@ const Chatbot = {
     const wait = this.say("bot", '<span class="cb__dots">문서를 찾고 답을 쓰는 중이에요</span>');
     try {
       const res = await fetch(this.api + "/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question: q }) });
-      if (!res.ok) throw new Error(res.status);
-      const r = await res.json();
+      const r = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(r.error || res.status);
       wait.innerHTML = `<p>${esc(r.answer).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\n/g, "<br>")}</p>
         <details class="cb__src"><summary>참고 문서 ${r.sources.length}개 · 최고 유사도 <b>${r.best_score.toFixed(3)}</b></summary>
           <ol>${r.sources.map((s) => `<li><div class="cb__bar"><i style="width:${Math.max(0, s.score) * 100}%"></i></div>
             <span class="mono">${s.score.toFixed(3)}</span> ${esc(s.section || s.source)}<p>${esc(s.text.slice(0, 160))}…</p></li>`).join("")}</ol>
           <div class="mono cb__sub">코사인 유사도 (1에 가까울수록 질문과 비슷함)${r.model ? ` · 검색 ${r.search_ms}ms · 답변 ${(r.llm_ms / 1000).toFixed(1)}초` : ` · 기준(${this.info.min_score}) 미만이라 답을 지어내지 않았어요`}</div></details>`;
-    } catch {
-      wait.innerHTML = "챗봇 서버에 연결하지 못했어요. 이 PC에서 Ollama와 <span class=\"mono\">chatbot/run.ps1</span>이 켜져 있는지 확인해 주세요.";
+    } catch (ex) {
+      wait.innerHTML = /^\d+$|fetch/i.test(ex.message) ? "챗봇 서버에 연결하지 못했어요. 잠시 뒤 다시 시도해 주세요." : esc(ex.message);
     }
     this.log.scrollTop = this.log.scrollHeight;
     this.busy = false;
