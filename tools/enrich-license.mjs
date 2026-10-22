@@ -2,7 +2,8 @@
    행정안전부 "식품_일반음식점 조회서비스"(공공데이터포털, 무료·자동승인)로 가게 정보 채우기
    - 채우는 것: 전화번호, 인허가일자(→ 개업 연도·노포·신규), 홈페이지, 폐업 여부
    - API: https://www.data.go.kr/data/15154916/openapi.do  (하루 10,000번까지 무료)
-   - 인증키: 공공데이터포털 마이페이지의 "일반 인증키(Decoding)" 를 tools/datago-key.txt 에 한 줄로 저장 (git 에 안 올림)
+   - 인증키: 공공데이터포털 마이페이지의 "일반 인증키(Decoding)" 를 .env 의 DATAGO_KEY 에 저장 (git 에 안 올림)
+            (없으면 tools/datago-key.txt 에 한 줄로 저장한 것을 씀)
    - 받은 자료는 tools/license-cache.json 에 저장해 두고 다시 쓰기 (git 에 안 올림)
 
    실행: node tools/enrich-license.mjs            (collect-sbiz.mjs 다음, build-seo.mjs 전에)
@@ -19,12 +20,14 @@ const cachePath = join(here, "license-cache.json");
 const KEYWORDS = ["감자탕", "뼈해장국", "감자국", "뼈다귀"];
 const API = "https://apis.data.go.kr/1741000/general_restaurants/info";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+if (existsSync(join(root, ".env"))) process.loadEnvFile(join(root, ".env"));
 
 /* ---------- 1. 인허가 자료 받기 ---------- */
 async function fetchAll() {
   const keyPath = join(here, "datago-key.txt");
-  if (!existsSync(keyPath)) throw new Error("tools/datago-key.txt 에 공공데이터포털 인증키를 넣어 주세요.");
-  const key = readFileSync(keyPath, "utf8").trim();
+  let key = (process.env.DATAGO_KEY || "").trim();
+  if (!key && existsSync(keyPath)) key = readFileSync(keyPath, "utf8").trim();
+  if (!key) throw new Error(".env 의 DATAGO_KEY 에 공공데이터포털 인증키를 넣어 주세요.");
   const byNo = new Map();
   for (const kw of KEYWORDS) {
     for (let page = 1; ; page++) {

@@ -6,24 +6,28 @@
    - 네이버의 별점·리뷰·사진은 가져오지 않습니다. (사이트 평점은 우리 사용자 후기로만 계산)
 
    실행: node tools/collect-naver.mjs
-   키:  tools/naver-key.json  →  { "id": "Client ID", "secret": "Client Secret" }
+   키:  .env 의 NAVER_CLIENT_ID / NAVER_CLIENT_SECRET
+        (없으면 tools/naver-key.json  →  { "id": "Client ID", "secret": "Client Secret" })
    결과: js/data-real.js
    ========================================================= */
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..");
+if (existsSync(join(root, ".env"))) process.loadEnvFile(join(root, ".env"));
 
-let key;
-try {
-  key = JSON.parse(readFileSync(join(here, "naver-key.json"), "utf8"));
-} catch {
-  console.error("tools/naver-key.json 파일이 없거나 형식이 잘못됐어요.");
-  process.exit(1);
+let key = { id: process.env.NAVER_CLIENT_ID, secret: process.env.NAVER_CLIENT_SECRET };
+if (!key.id || !key.secret) {
+  try {
+    key = JSON.parse(readFileSync(join(here, "naver-key.json"), "utf8"));
+  } catch {
+    console.error(".env 에 NAVER_CLIENT_ID / NAVER_CLIENT_SECRET 을 넣어 주세요.");
+    process.exit(1);
+  }
 }
-if (!key.id || !key.secret) { console.error("naver-key.json 에 id 와 secret 을 넣어 주세요."); process.exit(1); }
+if (!key.id || !key.secret) { console.error(".env 에 NAVER_CLIENT_ID / NAVER_CLIENT_SECRET 을 넣어 주세요."); process.exit(1); }
 
 /* 검색할 지역 (지역명 + "감자탕") — 지역 검색 API는 한 번에 최대 5곳만 주므로 지역을 잘게 나눔 */
 const AREAS = {
