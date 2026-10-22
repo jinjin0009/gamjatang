@@ -20,15 +20,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `node tools/collect-osm.mjs` — OpenStreetMap Overpass 에서 감자탕 가게 수집 (키 불필요)
 - `node tools/enrich-address.mjs` — 빈 주소를 Nominatim 으로 채움 (1초 1회, `tools/geocache.json` 캐시)
 - `node tools/collect-sbiz.mjs` — 공공데이터포털 소상공인 상가(상권)정보(https://www.data.go.kr/data/15083033/fileData.do, 분기 갱신, 로그인 없이 받아짐)의 zip 을 `tools/sbiz/` 에 풀어 두고 실행. 상호에 감자탕·뼈해장국·감자국·뼈다귀가 들어간 음식점을 골라 OSM 목록과 합침(약 4,800곳). 같은 가게는 OSM id 유지, 새 가게 id 는 `s`+상가업소번호. OSM 원본은 `tools/osm-base.json` 에 보관되므로 다시 돌려도 결과가 같음 (collect-osm 을 새로 돌리면 그 결과가 새 원본이 됨). `--dry` 는 숫자만, `--report` 는 못 합친 OSM 가게 목록. `tools/sbiz/`(350MB)는 gitignore.
+- `node tools/enrich-license.mjs` — 행정안전부 일반음식점 인허가 API(data.go.kr 15154916, 무료·자동승인, 하루 1만 건)로 전화번호·인허가일자(→ `since`·노포·신규)·폐업 여부 채움. 인증키는 `.env` 의 `DATAGO_KEY`(gitignore, 없으면 `tools/datago-key.txt`), 받은 자료는 `tools/license-cache.json` 캐시(`--refresh` 로 새로 받기, `--dry` 는 숫자만). 좌표는 EPSG:5174 → WGS84 로 직접 변환. **아직 인증키가 없어 한 번도 실행 안 됨** — 실행 후 좌표 차이 중간값이 수십 m 안인지 확인할 것.
 - `node tools/build-seo.mjs` — `r/`, `region/`, `faq.html`, `mbti.html`, sitemap.xml/txt, robots.txt, llms.txt, index.html 의 SEO 블록(`<!-- SEO:... -->`) 다시 생성
 - 새 주소에는 "전남광주통합특별시" 같은 바뀐 시·도 이름이 섞여 있음. `regionFrom()` 접두어 목록을 확인할 것.
 
 ## SEO / 검색 등록
 - robots.txt·llms.txt 는 도메인 맨 위에서만 읽힘. 실제로 쓰이는 파일은 `jinjin0009/jinjin0009.github.io` 저장소(`../github-root`)에 있음. llms.txt 를 새로 만들면 그쪽에도 복사.
 - Google Search Console: URL 접두어 속성으로 등록됨. 확인 파일 `googlecc18b349ef71932c.html` 은 지우면 안 됨. 새 사이트라 사이트맵이 처음에 "가져올 수 없음"으로 뜸 (파일 자체는 정상).
-- 네이버 서치어드바이저·네이버 지도 페이지는 두 브라우저 도구 모두 안전 제한으로 막힘 → 사용자가 직접 해야 함. 네이버 검색 API 수집기는 `tools/collect-naver.mjs` (키는 `tools/naver-key.json`, gitignore 됨).
+- 네이버 서치어드바이저·네이버 지도 페이지는 두 브라우저 도구 모두 안전 제한으로 막힘 → 사용자가 직접 해야 함. 네이버 검색 API 수집기는 `tools/collect-naver.mjs` (키는 `.env` 의 `NAVER_CLIENT_ID`·`NAVER_CLIENT_SECRET`, 없으면 `tools/naver-key.json`. 둘 다 gitignore 됨).
 - `build-seo.mjs` 는 생성 페이지의 "YYYY-MM-DD 기준" 날짜를 실행한 날로 바꿈 → 문구만 고칠 땐 생성 파일을 직접 고치거나 날짜 변경을 되돌릴 것.
 - `og-image.png`(링크 공유 미리보기)에는 사이트 이름이 그림으로 박혀 있음 → 이름·문구를 바꾸면 `../promo-video` 에서 `node og-image.mjs ../gamjatang/og-image.png` 로 다시 만들기.
+
+## CS 챗봇 (`chatbot/`, 로컬 전용)
+- Python(pyenv 3.12.10 + `.venv`) · LangChain · Ollama(`bge-m3` 임베딩, `exaone3.5:2.4b` 답변) RAG. 자세한 건 `chatbot/README.md`.
+- 지식 문서는 `chatbot/docs/*.md` — 사이트 기능(XP·미션·지역 수 등)을 바꾸면 여기도 고치고 `build_index.py` 다시 실행.
+- 채팅창 `js/chatbot.js` 는 localhost 에서 서버(`launch.json` 의 `chatbot`, 8001)가 켜져 있을 때만 버튼이 보임. 배포 사이트에서는 숨김.
 
 ## 홍보영상
 - `promo/` = 누구나 볼 수 있는 홍보영상 페이지 (https://jinjin0009.github.io/gamjatang/promo/). 영상 원본과 제작 도구는 저장소 밖 `../promo-video`.

@@ -1,8 +1,13 @@
 # API 키 (절대 올리지 않음)
+.env
 tools/naver-key.json
 # 주소 찾기 임시 저장 (다시 만들 수 있음)
 tools/geocache.json
 node_modules/
+# 챗봇 가상환경·임베딩 인덱스 (다시 만들 수 있음)
+chatbot/.venv/
+chatbot/index.json
+__pycache__/
 .DS_Store
 Thumbs.db
 # 상가정보 원본 (용량 큼)
