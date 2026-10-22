@@ -50,5 +50,8 @@ ollama pull exaone3.5:2.4b
 ## 비용
 Upstage 임베딩(질문마다 1번)과 ChatGPT 답변(질문마다 1번)은 유료 API 예요. 무료로만 쓰려면 두 키를 `.env` 에서 비우면 Ollama 로 돌아가요.
 
-## 한계
-서버가 이 PC 에서 돌기 때문에 배포 사이트(Vercel) 방문자는 쓸 수 없어요. 배포 사이트에서 버튼은 숨겨져 있어요. 공개하려면 서버를 외부에서 접속 가능한 곳에 두고 `window.CHATBOT_API` 에 주소를 넣어야 해요.
+## 배포 사이트 (Vercel)
+- `api/chatbot.py` (Vercel 서버 함수, 무료 요금제) 가 `rag.py` 를 그대로 써서 답해요. 패키지는 저장소 맨 위 `requirements.txt`, 설정은 `vercel.json`.
+- 인덱스는 `chatbot/index-upstage.json` 을 git 에 올려서 씀 → `docs/` 를 고치면 `build_index.py` 다시 실행하고 함께 commit.
+- 키는 Vercel 프로젝트 Settings → Environment Variables 에 `UPSTAGE_API_KEY`, `OPENAI_API_KEY`, `OPENAI_MODEL` 로 넣고 다시 배포(Redeploy). 키가 없으면 `/api/chatbot` 이 503 을 주고 채팅창 버튼이 안 보여요.
+- 요금 보호: IP 당 1시간 20번, 질문 300자까지. (서버 함수가 여러 개 뜨면 제한이 나뉘어 완벽하진 않음 → OpenAI·Upstage 콘솔에서 월 사용 한도도 걸어 둘 것)
