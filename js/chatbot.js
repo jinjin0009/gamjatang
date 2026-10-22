@@ -24,7 +24,7 @@ const Chatbot = {
       <button class="cb__fab" type="button" aria-expanded="false" aria-controls="cbPanel">${icon("info")}<span>CS 챗봇</span></button>
       <section class="cb__panel" id="cbPanel" hidden aria-label="감자탕 감별사 CS 챗봇">
         <header class="cb__head">
-          <div><b>BONE CLUB 챗봇</b><div class="mono cb__sub">${esc(this.info.llm)} · 유사도 상위 ${this.info.top_k}개</div></div>
+          <div><b>BONE CLUB 챗봇</b><div class="mono cb__sub">${esc(this.info.llm)} · 임베딩 ${esc(this.info.embed)} · 상위 ${this.info.top_k}개</div></div>
           <button class="cb__x" type="button" aria-label="챗봇 닫기">${icon("x")}</button>
         </header>
         <div class="cb__log" aria-live="polite"></div>
@@ -64,7 +64,7 @@ const Chatbot = {
         <details class="cb__src"><summary>참고 문서 ${r.sources.length}개 · 최고 유사도 <b>${r.best_score.toFixed(3)}</b></summary>
           <ol>${r.sources.map((s) => `<li><div class="cb__bar"><i style="width:${Math.max(0, s.score) * 100}%"></i></div>
             <span class="mono">${s.score.toFixed(3)}</span> ${esc(s.section || s.source)}<p>${esc(s.text.slice(0, 160))}…</p></li>`).join("")}</ol>
-          <div class="mono cb__sub">코사인 유사도 (1에 가까울수록 질문과 비슷함)${r.model ? ` · 검색 ${r.search_ms}ms · 답변 ${(r.llm_ms / 1000).toFixed(1)}초` : " · 기준(0.45) 미만이라 답을 지어내지 않았어요"}</div></details>`;
+          <div class="mono cb__sub">코사인 유사도 (1에 가까울수록 질문과 비슷함)${r.model ? ` · 검색 ${r.search_ms}ms · 답변 ${(r.llm_ms / 1000).toFixed(1)}초` : ` · 기준(${this.info.min_score}) 미만이라 답을 지어내지 않았어요`}</div></details>`;
     } catch {
       wait.innerHTML = "챗봇 서버에 연결하지 못했어요. 이 PC에서 Ollama와 <span class=\"mono\">chatbot/run.ps1</span>이 켜져 있는지 확인해 주세요.";
     }

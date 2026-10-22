@@ -32,7 +32,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `og-image.png`(링크 공유 미리보기)에는 사이트 이름이 그림으로 박혀 있음 → 이름·문구를 바꾸면 `../promo-video` 에서 `node og-image.mjs ../gamjatang/og-image.png` 로 다시 만들기.
 
 ## CS 챗봇 (`chatbot/`, 로컬 전용)
-- Python(pyenv 3.12.10 + `.venv`) · LangChain · Ollama(`bge-m3` 임베딩, `exaone3.5:2.4b` 답변) RAG. 자세한 건 `chatbot/README.md`.
+- Python(pyenv 3.12.10 + `.venv`) · LangChain RAG. 임베딩은 Upstage `embedding`(키 없으면 Ollama `bge-m3`), 답변은 ChatGPT `gpt-5-mini`(키 없으면 Ollama `exaone3.5:2.4b`). 키는 `gamjatang/.env`. 자세한 건 `chatbot/README.md`.
+- 임베딩을 바꾸면 유사도 분포가 달라짐 → `compare_embed.py` 로 보고 `rag.py` 의 `MIN_SCORE` 를 다시 맞출 것 (Upstage 0.26, bge-m3 0.45).
 - 지식 문서는 `chatbot/docs/*.md` — 사이트 기능(XP·미션·지역 수 등)을 바꾸면 여기도 고치고 `build_index.py` 다시 실행.
 - 채팅창 `js/chatbot.js` 는 localhost 에서 서버(`launch.json` 의 `chatbot`, 8001)가 켜져 있을 때만 버튼이 보임. 배포 사이트에서는 숨김.
 

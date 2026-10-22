@@ -6,7 +6,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from rag import EMBED_MODEL, LLM_MODEL, TOP_K, answer, load_index
+from rag import EMBED_MODEL, EMBED_PROVIDER, LLM_MODEL, LLM_PROVIDER, MIN_SCORE, TOP_K, answer, load_index
 
 app = FastAPI(title="감자탕 감별사 챗봇")
 app.add_middleware(
@@ -24,7 +24,7 @@ class Ask(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"ok": True, "llm": LLM_MODEL, "embed": EMBED_MODEL, "top_k": TOP_K}
+    return {"ok": True, "llm": f"{LLM_PROVIDER}:{LLM_MODEL}", "embed": f"{EMBED_PROVIDER}:{EMBED_MODEL}", "top_k": TOP_K, "min_score": MIN_SCORE}
 
 
 @app.post("/chat")
